@@ -1,0 +1,5 @@
+# Ignore binary files
+basic/basic
+advanced/advanced
+*.exe
+*.bin

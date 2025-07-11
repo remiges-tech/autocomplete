@@ -1,0 +1,98 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+vendor/
+
+# Go workspace file
+go.work
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Log files
+*.log
+
+# Debug files
+debug
+
+# Build directories
+bin/
+dist/
+build/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Coverage reports
+coverage.txt
+coverage.html
+*.cover
+
+# Redis dump files
+*.rdb
+dump.rdb
+
+# Go binaries without extension
+# Common pattern: go build produces extensionless executables
+/main
+main
+/cmd/*/[!.]*
+!/cmd/*/*.go
+!/cmd/*/*.md
+!/cmd/*/Makefile
+
+# Example binaries
+examples/basic/basic
+examples/indian-postal-codes/indian-postal-codes
+examples/strategies/strategies
+examples/*/main
+examples/*/*main
+
+# Any file without extension in root or subdirectories (likely binaries)
+# But exclude specific known text files
+/[!.]*
+!/Makefile
+!/Dockerfile
+!/LICENSE
+!/README
+!/CHANGELOG
+!/AUTHORS
+!/CONTRIBUTORS
+!/DEVELOPMENT
+!/TODO
+
+# Pre-commit files
+.secrets.baseline
+gosec-report.json

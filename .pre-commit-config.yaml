@@ -1,0 +1,101 @@
+repos:
+  # Go formatting
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.5.1
+    hooks:
+      - id: go-fmt
+      - id: go-vet
+      - id: go-imports
+      - id: go-cyclo
+        args: [-over=15]
+        exclude: '_test\.go$'
+      - id: no-go-testing
+      - id: golangci-lint
+      - id: go-mod-tidy
+
+  # General formatting
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  # Security checks
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+
+  # Binary file detection
+  - repo: local
+    hooks:
+      # Detect common binary file extensions
+      - id: forbid-binary-extensions
+        name: Forbid binary files by extension
+        entry: '(?i)\.(exe|dll|so|dylib|class|pyc|pyo|rbc|whl|jar|tar|gz|tgz|zip|7z|rar|deb|rpm|dmg|pkg|iso|img|bin|dat|db|o|a)$'
+        language: pygrep
+        types: ['binary']
+
+      # Detect Go compiled binaries using file command
+      - id: forbid-go-binaries
+        name: Forbid Go compiled binaries
+        entry: |
+          bash -c 'git diff --cached --name-only | while read f; do
+            if [ -f "$f" ] && file "$f" 2>/dev/null | grep -q "ELF\|Mach-O\|PE32"; then
+              echo "Binary file detected: $f"
+              exit 1
+            fi
+          done'
+        language: system
+        pass_filenames: false
+
+      # Check for extensionless files that might be binaries
+      - id: check-extensionless-binaries
+        name: Check extensionless files for binaries
+        entry: |
+          bash -c 'git diff --cached --name-only | grep -v "\." | while read f; do
+            if [ -f "$f" ] && ! head -c 1000 "$f" 2>/dev/null | grep -qI . 2>/dev/null; then
+              echo "Possible binary file without extension: $f"
+              echo "Hint: Use \"go build -o cmd.exe\" or \"go build -o cmd.bin\" to add extension"
+              exit 1
+            fi
+          done'
+        language: system
+        pass_filenames: false
+
+      # Exclude specific Go build artifacts
+      - id: forbid-go-test-binaries
+        name: Forbid Go test binaries
+        entry: '\.test$|\.test\.exe$'
+        language: pygrep
+        types: ['file']
+        exclude: '^\.gitignore$'
+
+  # Run tests before commit
+  - repo: local
+    hooks:
+      - id: go-test
+        name: Go Test
+        entry: make test
+        language: system
+        pass_filenames: false
+        types: [go]
+      - id: go-coverage
+        name: Go Test Coverage Check
+        entry: make coverage-check
+        language: system
+        pass_filenames: false
+        types: [go]
+      - id: go-build
+        name: Go Build
+        entry: make build
+        language: system
+        pass_filenames: false
+        types: [go]
