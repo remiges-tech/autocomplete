@@ -1,6 +1,6 @@
 module github.com/remiges-tech/autocomplete
 
-go 1.23.3
+go 1.24.3
 
 require (
 	github.com/elastic/go-elasticsearch/v8 v8.18.1

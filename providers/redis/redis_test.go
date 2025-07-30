@@ -3,39 +3,104 @@ package redis
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
 	"testing"
 
 	"github.com/go-redis/redis/v8"
+	"github.com/testcontainers/testcontainers-go"
+	"github.com/testcontainers/testcontainers-go/wait"
 
 	"github.com/remiges-tech/autocomplete/providers"
 )
 
 const testKey = "test"
 
-func getTestRedisClient(t *testing.T) *Provider {
+var (
+	sharedContainer testcontainers.Container
+	sharedProvider  *Provider
+)
+
+// TestMain sets up a shared Redis container for all tests
+func TestMain(m *testing.M) {
+	// Setup
+	ctx := context.Background()
+	container, provider, err := setupSharedContainer(ctx)
+	if err != nil {
+		log.Fatalf("Failed to setup test container: %v", err)
+	}
+
+	sharedContainer = container
+	sharedProvider = provider
+
+	// Run tests
+	code := m.Run()
+
+	// Cleanup
+	if sharedContainer != nil {
+		if err := sharedContainer.Terminate(ctx); err != nil {
+			log.Printf("Failed to terminate container: %v", err)
+		}
+	}
+
+	os.Exit(code)
+}
+
+func setupSharedContainer(ctx context.Context) (testcontainers.Container, *Provider, error) {
+	req := testcontainers.ContainerRequest{
+		Image:        "redis:7-alpine",
+		ExposedPorts: []string{"6379/tcp"},
+		WaitingFor:   wait.ForLog("Ready to accept connections"),
+	}
+
+	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+		ContainerRequest: req,
+		Started:          true,
+	})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	host, err := container.Host(ctx)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	port, err := container.MappedPort(ctx, "6379")
+	if err != nil {
+		return nil, nil, err
+	}
+
 	config := Config{
-		Addr:     "localhost:6379",
+		Addr:     fmt.Sprintf("%s:%s", host, port.Port()),
 		Password: "",
-		DB:       15,
+		DB:       0,
 	}
 
 	provider, err := New(config)
 	if err != nil {
-		t.Skipf("Redis not available: %v", err)
+		return nil, nil, err
 	}
-	ctx := context.Background()
-	provider.client.FlushDB(ctx)
 
-	return provider
+	return container, provider, nil
+}
+
+func getTestRedisClient(t *testing.T) *Provider {
+	if sharedProvider == nil {
+		t.Fatal("Redis provider not initialized")
+	}
+
+	// Clear the database before each test
+	ctx := context.Background()
+	if err := sharedProvider.client.FlushDB(ctx).Err(); err != nil {
+		t.Fatalf("Failed to flush database: %v", err)
+	}
+
+	return sharedProvider
 }
 
 func TestRedisProvider_Index(t *testing.T) {
 	provider := getTestRedisClient(t)
-	defer func() {
-		if err := provider.Close(); err != nil {
-			t.Errorf("Failed to close provider: %v", err)
-		}
-	}()
 
 	ctx := context.Background()
 	key := testKey
@@ -85,11 +150,6 @@ func TestRedisProvider_Index(t *testing.T) {
 
 func TestRedisProvider_Query(t *testing.T) {
 	provider := getTestRedisClient(t)
-	defer func() {
-		if err := provider.Close(); err != nil {
-			t.Errorf("Failed to close provider: %v", err)
-		}
-	}()
 
 	ctx := context.Background()
 	key := testKey
@@ -231,11 +291,6 @@ func TestRedisProvider_Query(t *testing.T) {
 
 func TestRedisProvider_MatchStrategies(t *testing.T) {
 	provider := getTestRedisClient(t)
-	defer func() {
-		if err := provider.Close(); err != nil {
-			t.Errorf("Failed to close provider: %v", err)
-		}
-	}()
 
 	ctx := context.Background()
 
@@ -363,11 +418,6 @@ func TestRedisProvider_MatchStrategies(t *testing.T) {
 
 func TestRedisProvider_NGramSlidingWindow(t *testing.T) {
 	provider := getTestRedisClient(t)
-	defer func() {
-		if err := provider.Close(); err != nil {
-			t.Errorf("Failed to close provider: %v", err)
-		}
-	}()
 
 	ctx := context.Background()
 	key := "test_sliding"
@@ -470,11 +520,6 @@ func getResultIDs(results []providers.ProviderResult) []string {
 
 func TestRedisProvider_Delete(t *testing.T) {
 	provider := getTestRedisClient(t)
-	defer func() {
-		if err := provider.Close(); err != nil {
-			t.Errorf("Failed to close provider: %v", err)
-		}
-	}()
 
 	ctx := context.Background()
 	key := testKey
@@ -510,11 +555,6 @@ func TestRedisProvider_Delete(t *testing.T) {
 
 func TestRedisProvider_DeleteAll(t *testing.T) {
 	provider := getTestRedisClient(t)
-	defer func() {
-		if err := provider.Close(); err != nil {
-			t.Errorf("Failed to close provider: %v", err)
-		}
-	}()
 
 	ctx := context.Background()
 	key := testKey
@@ -553,11 +593,6 @@ func TestRedisProvider_DeleteAll(t *testing.T) {
 
 func TestRedisProvider_CaseSensitive(t *testing.T) {
 	provider := getTestRedisClient(t)
-	defer func() {
-		if err := provider.Close(); err != nil {
-			t.Errorf("Failed to close provider: %v", err)
-		}
-	}()
 
 	ctx := context.Background()
 	key := testKey
@@ -725,11 +760,6 @@ func TestRedisProvider_CaseSensitive(t *testing.T) {
 
 func TestRedisProvider_CaseSensitiveDelete(t *testing.T) {
 	provider := getTestRedisClient(t)
-	defer func() {
-		if err := provider.Close(); err != nil {
-			t.Errorf("Failed to close provider: %v", err)
-		}
-	}()
 
 	ctx := context.Background()
 	key := testKey
@@ -807,11 +837,6 @@ func TestRedisProvider_CaseSensitiveDelete(t *testing.T) {
 
 func TestRedisProvider_BackwardCompatibility(t *testing.T) {
 	provider := getTestRedisClient(t)
-	defer func() {
-		if err := provider.Close(); err != nil {
-			t.Errorf("Failed to close provider: %v", err)
-		}
-	}()
 
 	ctx := context.Background()
 	key := testKey
