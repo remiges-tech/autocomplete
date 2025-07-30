@@ -22,15 +22,16 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
 
-      - name: Cache Go modules
-        uses: actions/cache@v4
-        continue-on-error: true
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ env.GO_VERSION }}-
-            ${{ runner.os }}-go-
+      # Temporarily disabled due to cache corruption issues
+      # - name: Cache Go modules
+      #   uses: actions/cache@v4
+      #   continue-on-error: true
+      #   with:
+      #     path: ~/go/pkg/mod
+      #     key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-go-${{ env.GO_VERSION }}-
+      #       ${{ runner.os }}-go-
 
       - name: Install golangci-lint
         run: |
@@ -57,15 +58,16 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
 
-      - name: Cache Go modules
-        uses: actions/cache@v4
-        continue-on-error: true
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ env.GO_VERSION }}-
-            ${{ runner.os }}-go-
+      # Temporarily disabled due to cache corruption issues
+      # - name: Cache Go modules
+      #   uses: actions/cache@v4
+      #   continue-on-error: true
+      #   with:
+      #     path: ~/go/pkg/mod
+      #     key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-go-${{ env.GO_VERSION }}-
+      #       ${{ runner.os }}-go-
 
       - name: Download dependencies
         run: go mod download
@@ -100,15 +102,16 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
 
-      - name: Cache Go modules
-        uses: actions/cache@v4
-        continue-on-error: true
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ env.GO_VERSION }}-
-            ${{ runner.os }}-go-
+      # Temporarily disabled due to cache corruption issues
+      # - name: Cache Go modules
+      #   uses: actions/cache@v4
+      #   continue-on-error: true
+      #   with:
+      #     path: ~/go/pkg/mod
+      #     key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-go-${{ env.GO_VERSION }}-
+      #       ${{ runner.os }}-go-
 
       - name: Build
         run: make build
