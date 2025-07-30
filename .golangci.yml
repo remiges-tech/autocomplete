@@ -38,7 +38,7 @@ linters-settings:
     sections:
       - standard
       - default
-      - prefix(github.com/remiges/cvl-kra/autocomplete)
+      - prefix(github.com/remiges-tech/autocomplete)
   goconst:
     min-len: 2
     min-occurrences: 2
@@ -59,7 +59,7 @@ linters-settings:
   gocyclo:
     min-complexity: 15
   goimports:
-    local-prefixes: github.com/remiges/cvl-kra/autocomplete
+    local-prefixes: github.com/remiges-tech/autocomplete
   gomnd:
     settings:
       mnd:

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/remiges/cvl-kra/autocomplete/providers"
+	"github.com/remiges-tech/autocomplete/providers"
 )
 
 // mockProvider is an in-memory provider for testing.

@@ -237,7 +237,7 @@ doc-serve:
 	@if command -v pkgsite >/dev/null 2>&1; then \
 		pkgsite -http=:6060 & \
 		echo "$(GREEN)Documentation server started at http://localhost:6060$(NC)"; \
-		echo "$(YELLOW)Browse to http://localhost:6060/github.com/remiges/cvl-kra/autocomplete$(NC)"; \
+		echo "$(YELLOW)Browse to http://localhost:6060/github.com/remiges-tech/autocomplete$(NC)"; \
 	else \
 		echo "$(YELLOW)pkgsite not found. Install with: go install golang.org/x/pkgsite/cmd/pkgsite@latest$(NC)"; \
 		echo "$(YELLOW)Falling back to godoc...$(NC)"; \

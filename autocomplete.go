@@ -8,8 +8,8 @@
 // Basic usage:
 //
 //	import (
-//		"github.com/remiges/cvl-kra/autocomplete"
-//		"github.com/remiges/cvl-kra/autocomplete/providers/redis"
+//		"github.com/remiges-tech/autocomplete"
+//		"github.com/remiges-tech/autocomplete/providers/redis"
 //	)
 //
 //	// Configure provider
@@ -41,7 +41,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/remiges/cvl-kra/autocomplete/providers"
+	"github.com/remiges-tech/autocomplete/providers"
 )
 
 // Result represents a single autocomplete result returned from a query.
@@ -184,7 +184,7 @@ func (a *autocompleteImpl) Close() error {
 //
 // Example:
 //
-//	import _ "github.com/remiges/cvl-kra/autocomplete/providers/redis"
+//	import _ "github.com/remiges-tech/autocomplete/providers/redis"
 //
 //	config := autocomplete.NewConfig(redis.Config{Addr: "localhost:6379"})
 //	ac, err := autocomplete.New("redis", config)

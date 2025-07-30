@@ -14,7 +14,7 @@ An autocomplete package for Go with support for multiple storage backends. Curre
 ## Installation
 
 ```bash
-go get github.com/remiges/cvl-kra/autocomplete
+go get github.com/remiges-tech/autocomplete
 ```
 
 ## Quick Start
@@ -26,9 +26,9 @@ import (
     "context"
     "log"
 
-    "github.com/remiges/cvl-kra/autocomplete"
-    "github.com/remiges/cvl-kra/autocomplete/providers/redis"
-    _ "github.com/remiges/cvl-kra/autocomplete/providers/redis" // Register provider
+    "github.com/remiges-tech/autocomplete"
+    "github.com/remiges-tech/autocomplete/providers/redis"
+    _ "github.com/remiges-tech/autocomplete/providers/redis" // Register provider
 )
 
 func main() {

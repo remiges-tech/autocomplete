@@ -1,4 +1,4 @@
-module github.com/remiges/cvl-kra/autocomplete
+module github.com/remiges-tech/autocomplete
 
 go 1.23.3
 
