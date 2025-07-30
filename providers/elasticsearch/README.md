@@ -14,7 +14,7 @@ The Elasticsearch provider implements the autocomplete interface using Elasticse
 
 ```go
 import (
-    _ "github.com/remiges/cvl-kra/autocomplete/providers/elasticsearch"
+    _ "github.com/remiges-tech/autocomplete/providers/elasticsearch"
 )
 ```
 

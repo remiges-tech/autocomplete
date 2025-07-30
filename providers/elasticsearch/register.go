@@ -3,14 +3,14 @@ package elasticsearch
 import (
 	"fmt"
 
-	"github.com/remiges/cvl-kra/autocomplete"
-	"github.com/remiges/cvl-kra/autocomplete/providers"
+	"github.com/remiges-tech/autocomplete"
+	"github.com/remiges-tech/autocomplete/providers"
 )
 
 // init registers the Elasticsearch provider. Import this package with a blank identifier
 // to use Elasticsearch as the autocomplete backend:
 //
-//	import _ "github.com/remiges/cvl-kra/autocomplete/providers/elasticsearch"
+//	import _ "github.com/remiges-tech/autocomplete/providers/elasticsearch"
 //
 //nolint:gochecknoinits // init() is the idiomatic pattern for provider registration
 func init() {

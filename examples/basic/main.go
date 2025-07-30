@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/remiges/cvl-kra/autocomplete"
-	"github.com/remiges/cvl-kra/autocomplete/providers/redis"
-	_ "github.com/remiges/cvl-kra/autocomplete/providers/redis"
+	"github.com/remiges-tech/autocomplete"
+	"github.com/remiges-tech/autocomplete/providers/redis"
+	_ "github.com/remiges-tech/autocomplete/providers/redis"
 )
 
 func main() {

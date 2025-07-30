@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/remiges/cvl-kra/autocomplete"
-	"github.com/remiges/cvl-kra/autocomplete/providers/elasticsearch"
-	_ "github.com/remiges/cvl-kra/autocomplete/providers/elasticsearch" // Register provider
+	"github.com/remiges-tech/autocomplete"
+	"github.com/remiges-tech/autocomplete/providers/elasticsearch"
+	_ "github.com/remiges-tech/autocomplete/providers/elasticsearch" // Register provider
 )
 
 type postalCodeEntry struct {

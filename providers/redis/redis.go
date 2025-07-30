@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 
-	"github.com/remiges/cvl-kra/autocomplete/providers"
+	"github.com/remiges-tech/autocomplete/providers"
 )
 
 const (
