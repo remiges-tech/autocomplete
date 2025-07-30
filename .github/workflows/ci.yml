@@ -24,11 +24,13 @@ jobs:
 
       - name: Cache Go modules
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go124-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go124-
+            ${{ runner.os }}-go-${{ env.GO_VERSION }}-
+            ${{ runner.os }}-go-
 
       - name: Install golangci-lint
         run: |
@@ -57,11 +59,13 @@ jobs:
 
       - name: Cache Go modules
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go124-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go124-
+            ${{ runner.os }}-go-${{ env.GO_VERSION }}-
+            ${{ runner.os }}-go-
 
       - name: Download dependencies
         run: go mod download
@@ -98,11 +102,13 @@ jobs:
 
       - name: Cache Go modules
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go124-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go124-
+            ${{ runner.os }}-go-${{ env.GO_VERSION }}-
+            ${{ runner.os }}-go-
 
       - name: Build
         run: make build
