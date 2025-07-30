@@ -48,7 +48,7 @@ func TestMain(m *testing.M) {
 
 func setupSharedContainer(ctx context.Context) (testcontainers.Container, *Provider, error) {
 	req := testcontainers.ContainerRequest{
-		Image:        "redis:7-alpine",
+		Image:        "redis:8-alpine",
 		ExposedPorts: []string{"6379/tcp"},
 		WaitingFor:   wait.ForLog("Ready to accept connections"),
 	}

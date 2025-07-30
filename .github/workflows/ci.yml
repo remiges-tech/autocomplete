@@ -46,16 +46,6 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    services:
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -78,8 +68,6 @@ jobs:
 
       - name: Run tests
         run: make test
-        env:
-          REDIS_ADDR: localhost:6379
 
       - name: Run tests with coverage
         run: make coverage
@@ -158,16 +146,6 @@ jobs:
   benchmark:
     name: Benchmark
     runs-on: ubuntu-latest
-    services:
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -179,8 +157,6 @@ jobs:
 
       - name: Run benchmarks
         run: make bench
-        env:
-          REDIS_ADDR: localhost:6379
 
       - name: Store benchmark result
         uses: benchmark-action/github-action-benchmark@v1
