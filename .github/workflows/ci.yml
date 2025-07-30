@@ -159,9 +159,16 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Run benchmarks
-        run: make bench
+        run: |
+          if make bench | tee benchmark.txt | grep -q "Benchmark"; then
+            echo "BENCHMARKS_FOUND=true" >> $GITHUB_ENV
+          else
+            echo "No benchmarks found in the codebase" > benchmark.txt
+            echo "BENCHMARKS_FOUND=false" >> $GITHUB_ENV
+          fi
 
       - name: Store benchmark result
+        if: env.BENCHMARKS_FOUND == 'true'
         uses: benchmark-action/github-action-benchmark@v1
         with:
           tool: 'go'
